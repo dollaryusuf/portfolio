@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumina AI Studio — Case Study | Yusuf Abdulwasiu</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+/* ── BASE / TOKENS (inherited from main portfolio) ───────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0A0A0A;--ink2:#2D2D2D;--ink3:#64748B;--ink4:#94A3B8;
+  --paper:#F5F4F0;--paper2:#EDEAE2;--paper3:#E2DDD4;--white:#FFFFFF;
+  --electric:#00E5FF;
+  --purple:#B14EFF;--purple-glow:rgba(177,78,255,0.35);
+  --blue:#2563EB;--blue-lt:#EFF4FF;
+  --line:rgba(255,255,255,0.10);--line2:rgba(255,255,255,0.06);
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--r24:24px;--r999:999px;
+  --font-d:'Syne',sans-serif;--font-b:'Inter',sans-serif;--font-m:'Courier New',Courier,monospace;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-b);background:var(--ink);color:var(--white);
+  line-height:1.6;overflow-x:hidden;
+}
+
+/* ── X-RAY MODE (shared system) ──────────────────────────────── */
+body.xray *{
+  outline:1px solid rgba(0,229,255,0.55)!important;
+  outline-offset:0px;
+  position:relative;
+}
+body.xray *::after{
+  content:attr(data-xray);
+  position:absolute;
+  top:0;left:0;
+  font-size:9px;font-family:monospace;font-weight:600;
+  color:#00E5FF;background:rgba(0,0,0,0.85);
+  padding:1px 4px;line-height:1.4;
+  pointer-events:none;z-index:9999;
+  white-space:nowrap;border-radius:0 0 3px 0;
+}
+body.xray canvas{outline:1px dashed rgba(0,229,255,0.4)!important}
+body.xray .xray-hide{display:none}
+
+/* ── NAV ──────────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,10,10,0.85);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+  padding:0 40px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{font-family:var(--font-d);font-weight:800;font-size:15px;letter-spacing:-0.3px;color:var(--white);text-decoration:none}
+.nav-logo span{color:var(--electric);text-shadow:0 0 12px rgba(0,229,255,0.5)}
+
+.back-home{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:600;color:rgba(255,255,255,0.6);
+  background:transparent;border:1px solid var(--line);
+  padding:8px 16px;border-radius:var(--r8);cursor:pointer;
+  text-decoration:none;transition:color .15s,border-color .15s,background .15s;
+  font-family:var(--font-b);
+}
+.back-home:hover{color:var(--white);border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.06)}
+.back-home i{font-size:15px}
+
+.xray-toggle-wrap{display:flex;align-items:center;gap:10px}
+.xray-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);transition:color .2s}
+.xray-label.on{color:var(--electric);text-shadow:0 0 8px rgba(0,229,255,0.4)}
+.toggle-track{
+  width:44px;height:24px;border-radius:var(--r999);
+  background:rgba(255,255,255,0.15);border:none;cursor:pointer;
+  position:relative;transition:background .25s;flex-shrink:0;
+  outline:none;
+}
+.toggle-track.on{background:#001A1F;box-shadow:0 0 0 1px var(--electric),0 0 10px rgba(0,229,255,0.3)}
+.toggle-thumb{
+  position:absolute;top:3px;left:3px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--white);transition:transform .2s,background .2s;
+  pointer-events:none;
+}
+.toggle-track.on .toggle-thumb{transform:translateX(20px);background:var(--electric)}
+
+.nav-right{display:flex;align-items:center;gap:24px}
+
+/* ── SHARED SECTION SHELL ────────────────────────────────────── */
+.section{padding:100px 48px;max-width:1200px;margin:0 auto}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--electric);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.eyebrow::before{content:'';width:20px;height:1.5px;background:var(--electric)}
+.section-title{font-family:var(--font-d);font-weight:800;font-size:clamp(28px,3.4vw,46px);letter-spacing:-1.5px;color:var(--white);margin-bottom:18px;line-height:1.1}
+.section-title em{font-style:normal;color:var(--electric)}
+.section-sub{font-size:15px;color:rgba(255,255,255,0.5);max-width:600px;line-height:1.8;margin-bottom:0}
+
+/* ════════════════════════════════════════════════════════════
+   1. HERO
+   ════════════════════════════════════════════════════════════ */
+.hero{
+  min-height:100vh;padding:140px 48px 80px;position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+}
+/* Ambient glow driven by the temperature slider */
+.hero-glow{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 55% 50% at 50% 38%, var(--glow-color, rgba(0,229,255,0.22)) 0%, transparent 68%);
+  transition:background 60ms linear;
+}
+.hero-grid-overlay{
+  position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.35;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:radial-gradient(ellipse 70% 60% at 50% 35%,black 0%,transparent 75%);
+}
+.hero-content{position:relative;z-index:1;max-width:760px;display:flex;flex-direction:column;align-items:center}
+.hero-eyebrow{
+  font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--electric);margin-bottom:22px;display:flex;align-items:center;gap:8px;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:20px;height:1.5px;background:var(--electric)}
+.hero-h1{
+  font-family:var(--font-d);font-weight:800;
+  font-size:clamp(36px,6.5vw,72px);line-height:1.0;
+  letter-spacing:-2.5px;margin-bottom:22px;color:var(--white);
+}
+.hero-sub{
+  font-size:clamp(15px,1.6vw,19px);color:rgba(255,255,255,0.6);
+  line-height:1.6;max-width:560px;margin-bottom:56px;font-weight:400;
+}
+
+/* ── Parameter Slider demo (signature element) ───────────────── */
+.demo-rig{
+  width:100%;max-width:560px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--line);
+  border-radius:var(--r16);
+  padding:32px 32px 28px;
+  backdrop-filter:blur(8px);
+}
+.demo-rig-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px}
+.demo-rig-label{text-align:left}
+.demo-rig-key{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:6px}
+.demo-rig-name{font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--white);letter-spacing:-0.3px}
+.demo-rig-readout{text-align:right}
+.demo-rig-val{
+  font-family:var(--font-m);font-size:26px;font-weight:700;
+  color:var(--mode-color, var(--electric));transition:color 60ms linear;
+  letter-spacing:-1px;
+}
+.demo-rig-mode{
+  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--mode-color, var(--electric));transition:color 60ms linear;
+}
+
+.slider-track-wrap{position:relative;padding:4px 0 14px}
+.slider-track{
+  width:100%;height:6px;border-radius:var(--r999);
+  background:linear-gradient(90deg, var(--electric) 0%, var(--purple) 100%);
+  position:relative;
+}
+input[type="range"].temp-slider{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:6px;background:transparent;
+  position:absolute;top:0;left:0;margin:0;cursor:pointer;
+}
+input[type="range"].temp-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--white);
+  border:3px solid var(--mode-color, var(--electric));
+  box-shadow:0 0 0 4px rgba(0,0,0,0.4), 0 0 16px var(--mode-color, rgba(0,229,255,0.6));
+  cursor:pointer;transition:border-color 60ms linear,box-shadow 60ms linear;
+  margin-top:-8px;
+}
+input[type="range"].temp-slider::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;background:var(--white);
+  border:3px solid var(--mode-color, var(--electric));
+  box-shadow:0 0 16px var(--mode-color, rgba(0,229,255,0.6));
+  cursor:pointer;
+}
+input[type="range"].temp-slider::-moz-range-track{background:transparent;height:6px}
+
+.slider-scale{display:flex;justify-content:space-between;margin-top:16px}
+.slider-scale-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.4)}
+.slider-scale-dot{width:8px;height:8px;border-radius:50%}
+.slider-scale-item.predictable .slider-scale-dot{background:var(--electric);box-shadow:0 0 8px rgba(0,229,255,0.6)}
+.slider-scale-item.creative .slider-scale-dot{background:var(--purple);box-shadow:0 0 8px rgba(177,78,255,0.6)}
+
+.demo-rig-footer{
+  margin-top:22px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6;text-align:left;
+}
+.demo-rig-footer strong{color:rgba(255,255,255,0.6);font-weight:600}
+
+/* ════════════════════════════════════════════════════════════
+   2. THE "WHY" — HYBRID EDGE
+   ════════════════════════════════════════════════════════════ */
+.why-section{border-top:1px solid var(--line);background:rgba(255,255,255,0.015)}
+.why-inner{display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;align-items:start}
+.why-text-block{display:flex;flex-direction:column;gap:20px}
+.why-text-block p{font-size:15px;color:rgba(255,255,255,0.55);line-height:1.85}
+.why-text-block p strong{color:var(--white);font-weight:600}
+.why-credentials{display:flex;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r12);overflow:hidden;margin-top:8px}
+.why-cred{flex:1;background:rgba(255,255,255,0.02);padding:18px 16px}
+.why-cred-n{font-family:var(--font-d);font-size:24px;font-weight:800;letter-spacing:-1px;color:var(--electric)}
+.why-cred-l{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;line-height:1.4}
+
+/* Entropy heatmap visual */
+.heatmap-card{
+  background:rgba(255,255,255,0.03);border:1px solid var(--line);
+  border-radius:var(--r16);padding:24px;
+}
+.heatmap-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.heatmap-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4)}
+.heatmap-live{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--electric)}
+.heatmap-live-dot{width:6px;height:6px;border-radius:50%;background:var(--electric);box-shadow:0 0 6px var(--electric);animation:pulse-ring2 1.6s ease-out infinite}
+@keyframes pulse-ring2{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
+
+.heatmap-grid{
+  display:grid;grid-template-columns:repeat(12,1fr);gap:3px;
+  margin-bottom:16px;
+}
+.heatmap-cell{aspect-ratio:1;border-radius:2px}
+.heatmap-caption{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.7}
+.heatmap-legend{display:flex;align-items:center;gap:10px;margin-top:14px}
+.heatmap-legend-bar{flex:1;height:6px;border-radius:999px;background:linear-gradient(90deg,#0A2A30 0%,var(--electric) 45%,var(--purple) 100%)}
+.heatmap-legend-text{font-size:10px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.5px;white-space:nowrap}
+
+/* ════════════════════════════════════════════════════════════
+   3. GALLERY — BENTO GRID
+   ════════════════════════════════════════════════════════════ */
+.gallery-section{border-top:1px solid var(--line)}
+.bento-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  grid-template-rows:auto auto;
+  gap:16px;
+  margin-top:48px;
+}
+.bento-card{
+  background:rgba(255,255,255,0.03);border:1px solid var(--line);
+  border-radius:var(--r16);overflow:hidden;position:relative;
+  transition:border-color .2s,transform .2s;display:flex;flex-direction:column;
+}
+.bento-card:hover{border-color:rgba(0,229,255,0.3);transform:translateY(-3px)}
+.bento-card.card-wide{grid-column:1;grid-row:1 / 3}
+.bento-card.card-stack-1{grid-column:2;grid-row:1}
+.bento-card.card-stack-2{grid-column:2;grid-row:2}
+
+.bento-visual{
+  flex:1;min-height:200px;position:relative;display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--line2);overflow:hidden;
+}
+.bento-card.card-wide .bento-visual{min-height:340px}
+.bento-visual-icon{font-size:42px;color:rgba(0,229,255,0.85);position:relative;z-index:1}
+.bento-visual-bg{position:absolute;inset:0;opacity:.5}
+
+.bento-body{padding:20px 22px 22px}
+.bento-no{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--ink4);margin-bottom:8px}
+.bento-title{font-family:var(--font-d);font-size:17px;font-weight:700;letter-spacing:-0.3px;color:var(--white);margin-bottom:8px}
+.bento-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7}
+
+/* Mini-mockup illustrations inside bento visuals */
+.mock-bars{display:flex;flex-direction:column;gap:8px;width:78%}
+.mock-bar-row{display:flex;align-items:center;gap:10px}
+.mock-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0}
+.mock-line{height:8px;border-radius:4px;background:rgba(255,255,255,0.08);flex:1}
+.mock-line.accent{background:linear-gradient(90deg,var(--electric),transparent)}
+
+.mock-sliders{display:flex;flex-direction:column;gap:14px;width:72%}
+.mock-slider-row{display:flex;flex-direction:column;gap:6px}
+.mock-slider-label{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,0.3);font-family:var(--font-m)}
+.mock-slider-bar{height:4px;border-radius:999px;background:rgba(255,255,255,0.08);position:relative}
+.mock-slider-fill{position:absolute;inset:0 auto 0 0;border-radius:999px;background:var(--electric)}
+.mock-slider-fill.purple{background:var(--purple)}
+
+.mock-ab{display:flex;gap:14px;width:84%}
+.mock-ab-card{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.mock-ab-card.win{border-color:rgba(0,229,255,0.4)}
+.mock-ab-tag{font-size:8px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.3)}
+.mock-ab-card.win .mock-ab-tag{color:var(--electric)}
+.mock-ab-line{height:6px;border-radius:3px;background:rgba(255,255,255,0.1)}
+.mock-ab-line.short{width:60%}
+
+/* ════════════════════════════════════════════════════════════
+   4. FEATURE DEEP-DIVE — PROGRESSIVE DISCLOSURE
+   ════════════════════════════════════════════════════════════ */
+.feature-section{border-top:1px solid var(--line);background:rgba(255,255,255,0.015)}
+.feature-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.feature-visual{
+  background:rgba(255,255,255,0.03);border:1px solid var(--line);
+  border-radius:var(--r16);padding:28px;position:relative;
+}
+.fv-tabs{display:flex;gap:8px;margin-bottom:20px}
+.fv-tab{
+  font-size:11px;font-weight:700;letter-spacing:0.5px;padding:7px 14px;
+  border-radius:var(--r8);border:1px solid var(--line);color:rgba(255,255,255,0.4);
+  background:transparent;cursor:pointer;font-family:var(--font-b);transition:all .2s;
+}
+.fv-tab.is-active{color:var(--ink);background:var(--electric);border-color:var(--electric)}
+.fv-panel{min-height:260px;display:flex;flex-direction:column;gap:12px}
+.fv-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid var(--line2);border-radius:var(--r8)}
+.fv-row-label{font-size:13px;color:rgba(255,255,255,0.6);font-weight:500}
+.fv-row-val{font-family:var(--font-m);font-size:12px;color:var(--electric)}
+.fv-row.locked{opacity:.4}
+.fv-row.locked .fv-row-val{color:rgba(255,255,255,0.3)}
+.fv-godmode-hint{
+  display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,0.3);
+  margin-top:auto;padding-top:14px;border-top:1px solid var(--line2);
+}
+
+.feature-text{}
+.feature-text .eyebrow{margin-bottom:14px}
+.feature-text h3{font-family:var(--font-d);font-weight:800;font-size:clamp(24px,2.6vw,34px);letter-spacing:-1px;color:var(--white);margin-bottom:18px;line-height:1.15}
+.feature-text p{font-size:14.5px;color:rgba(255,255,255,0.55);line-height:1.85;margin-bottom:18px}
+.feature-points{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+.feature-point{display:flex;gap:14px;align-items:flex-start}
+.feature-point-icon{
+  width:32px;height:32px;flex-shrink:0;border-radius:8px;
+  background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.15);
+  display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--electric);
+}
+.feature-point-title{font-size:13.5px;font-weight:700;color:var(--white);margin-bottom:3px}
+.feature-point-text{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65}
+
+/* ════════════════════════════════════════════════════════════
+   5. TECHNICAL SPECS
+   ════════════════════════════════════════════════════════════ */
+.specs-section{border-top:1px solid var(--line)}
+.specs-terminal{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(0,229,255,0.15);
+  border-radius:var(--r12);overflow:hidden;margin-top:40px;max-width:680px;
+}
+.specs-term-bar{display:flex;align-items:center;gap:6px;padding:12px 16px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(0,229,255,0.08)}
+.specs-dot{width:9px;height:9px;border-radius:50%}
+.specs-dot.r{background:#FF5F57;opacity:.6}
+.specs-dot.y{background:#FEBC2E;opacity:.6}
+.specs-dot.g{background:#28C840;opacity:.6}
+.specs-term-title{font-family:var(--font-b);font-size:11px;font-weight:500;color:rgba(255,255,255,0.3);letter-spacing:0.5px;margin-left:auto}
+.specs-list{padding:24px 28px 28px;display:flex;flex-direction:column;gap:14px}
+.specs-row{display:flex;align-items:baseline;gap:16px;font-family:var(--font-m);font-size:13.5px}
+.specs-key{color:var(--electric);flex-shrink:0;min-width:120px}
+.specs-key::before{content:'> ';opacity:.5}
+.specs-val{color:rgba(255,255,255,0.7)}
+.specs-tag{color:rgba(255,255,255,0.3);font-size:12px}
+
+/* ════════════════════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════════════════════ */
+.lumina-footer{
+  padding:48px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;
+}
+.footer-copy{font-size:12px;color:rgba(255,255,255,0.3)}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════ */
+@media(max-width:560px){
+  nav{padding:0 14px}
+  .nav-right{gap:12px}
+  .xray-label{display:none}
+  .back-home span{display:none}
+  .back-home{padding:10px;min-width:38px;min-height:38px;justify-content:center}
+  .back-home i{font-size:16px}
+}
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .section{padding:64px 24px}
+  .hero{padding:120px 24px 64px}
+  .why-inner,.feature-inner{grid-template-columns:1fr;gap:40px}
+  .feature-inner{display:flex;flex-direction:column-reverse}
+  .bento-grid{grid-template-columns:1fr;grid-template-rows:none}
+  .bento-card.card-wide{grid-column:1;grid-row:auto}
+  .bento-card.card-stack-1,.bento-card.card-stack-2{grid-column:1;grid-row:auto}
+  .why-credentials{flex-wrap:wrap}
+  .why-credentials .why-cred{flex:1 1 45%}
+  .demo-rig{padding:24px 20px 22px}
+  .lumina-footer{padding:32px 24px;flex-direction:column;align-items:flex-start}
+}
+@media(max-width:520px){
+  .specs-key{min-width:100px}
+  .specs-row{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────────── -->
+<nav data-xray="">
+  <a href="#" class="nav-logo" data-xray="">Lumina<span>.</span></a>
+  <div class="nav-right" data-xray="">
+    <div class="xray-toggle-wrap" data-xray="">
+      <span class="xray-label" id="xray-label" data-xray="">Data View</span>
+      <button class="toggle-track" id="xray-btn" onclick="toggleXray()" aria-label="Toggle X-Ray data view" aria-pressed="false" role="switch" data-xray="">
+        <div class="toggle-thumb" data-xray=""></div>
+      </button>
+    </div>
+    <a href="/#projects" class="back-home" id="back-home-btn" data-xray="">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i>
+      <span>Back to Home</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════
+     1. HERO — Parameter Slider Demo
+     ════════════════════════════════════════════════════════════ -->
+<section class="hero" id="hero" data-xray="">
+  <div class="hero-glow" id="hero-glow" data-xray=""></div>
+  <div class="hero-grid-overlay" aria-hidden="true"></div>
+
+  <div class="hero-content" data-xray="">
+    <div class="hero-eyebrow" data-xray="">Case Study · Product Design</div>
+    <h1 class="hero-h1" data-xray="">Lumina AI Studio</h1>
+    <p class="hero-sub" data-xray="">A Cockpit for Creativity: designing the future of LLM fine-tuning.</p>
+
+    <!-- Interactive Parameter Slider -->
+    <div class="demo-rig" data-xray="">
+      <div class="demo-rig-top" data-xray="">
+        <div class="demo-rig-label" data-xray="">
+          <div class="demo-rig-key" data-xray="">Live Demo</div>
+          <div class="demo-rig-name" data-xray="">Model Temperature</div>
+        </div>
+        <div class="demo-rig-readout" data-xray="">
+          <div class="demo-rig-val" id="temp-val" data-xray="">0.20</div>
+          <div class="demo-rig-mode" id="temp-mode" data-xray="">Predictable</div>
+        </div>
+      </div>
+
+      <div class="slider-track-wrap" data-xray="">
+        <div class="slider-track" aria-hidden="true" data-xray=""></div>
+        <input type="range" class="temp-slider" id="temp-slider" min="0" max="100" value="20"
+               aria-label="Model Temperature, from Predictable to Creative" data-xray="">
+      </div>
+
+      <div class="slider-scale" data-xray="">
+        <div class="slider-scale-item predictable" data-xray=""><span class="slider-scale-dot" data-xray=""></span>Predictable</div>
+        <div class="slider-scale-item creative" data-xray=""><span class="slider-scale-dot" data-xray=""></span>Creative</div>
+      </div>
+
+      <div class="demo-rig-footer" data-xray="">
+        <strong>Try it:</strong> drag the handle — Lumina's interface glow shifts in real time so creators feel the model's behavior shift, not just read a number.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     2. THE "WHY" — THE HYBRID EDGE
+     ════════════════════════════════════════════════════════════ -->
+<section class="section why-section" id="why" data-xray="">
+  <div class="eyebrow" data-xray="">The Why</div>
+  <h2 class="section-title" data-xray="">The Hybrid <em>Edge</em></h2>
+  <p class="section-sub" data-xray="" style="margin-bottom:48px">Lumina's interface decisions aren't aesthetic guesses — they're informed by years spent inside the machinery that fine-tuning tools are meant to expose.</p>
+
+  <div class="why-inner" data-xray="">
+    <div class="why-text-block" data-xray="">
+      <p data-xray=""><strong>Five years in RLHF</strong> taught me where fine-tuning tools actually break down: not in the math, but in the moment a creator has to guess what an invisible parameter is doing to their output. Annotators and reward-model teams live with that ambiguity daily — Lumina is built to remove it.</p>
+      <p data-xray="">My background in <strong>Computer Science</strong> means every "simple" control in Lumina — a slider, a toggle, a comparison view — is grounded in what's actually happening underneath: sampling distributions, token probabilities, loss curves. The interface never promises more certainty than the model can give.</p>
+      <p data-xray="">That combination produced Lumina's central bet: <strong>complexity should be visible, not hidden</strong> — but only when the creator asks for it.</p>
+
+      <div class="why-credentials" data-xray="">
+        <div class="why-cred" data-xray="">
+          <div class="why-cred-n" data-xray="">5+</div>
+          <div class="why-cred-l" data-xray="">Years in RLHF &amp; model evaluation</div>
+        </div>
+        <div class="why-cred" data-xray="">
+          <div class="why-cred-n" data-xray="">CS</div>
+          <div class="why-cred-l" data-xray="">Background grounding every interaction</div>
+        </div>
+        <div class="why-cred" data-xray="">
+          <div class="why-cred-n" data-xray="">1:1</div>
+          <div class="why-cred-l" data-xray="">Interface-to-parameter fidelity</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="heatmap-card" data-xray="">
+      <div class="heatmap-card-head" data-xray="">
+        <span class="heatmap-title" data-xray="">Entropy Heatmap</span>
+        <span class="heatmap-live" data-xray=""><span class="heatmap-live-dot" data-xray=""></span>Live</span>
+      </div>
+      <div class="heatmap-grid" id="heatmap-grid" data-xray=""></div>
+      <div class="heatmap-legend" data-xray="">
+        <span class="heatmap-legend-text" data-xray="">Stable</span>
+        <div class="heatmap-legend-bar" data-xray=""></div>
+        <span class="heatmap-legend-text" data-xray="">Volatile</span>
+      </div>
+      <p class="heatmap-caption" data-xray="">Each cell represents token-level prediction uncertainty across a generation. Instead of a single temperature number, creators see <em>where</em> the model is improvising — line by line, token by token.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     3. THE GALLERY — BENTO GRID
+     ════════════════════════════════════════════════════════════ -->
+<section class="section gallery-section" id="gallery" data-xray="">
+  <div class="eyebrow" data-xray="">The Gallery</div>
+  <h2 class="section-title" data-xray="">Three Surfaces, <em>One Studio</em></h2>
+  <p class="section-sub" data-xray="">Lumina's core workflows, from first prompt to final comparison.</p>
+
+  <div class="bento-grid" data-xray="">
+    <!-- Card 1: Prompt Workspace (wide) -->
+    <div class="bento-card card-wide" data-xray="">
+      <div class="bento-visual" data-xray="">
+        <div class="mock-bars" data-xray="">
+          <div class="mock-bar-row" data-xray=""><span class="mock-dot" data-xray=""></span><div class="mock-line accent" style="width:85%" data-xray=""></div></div>
+          <div class="mock-bar-row" data-xray=""><span class="mock-dot" data-xray=""></span><div class="mock-line" style="width:65%" data-xray=""></div></div>
+          <div class="mock-bar-row" data-xray=""><span class="mock-dot" data-xray=""></span><div class="mock-line" style="width:92%" data-xray=""></div></div>
+          <div class="mock-bar-row" data-xray=""><span class="mock-dot" data-xray=""></span><div class="mock-line accent" style="width:50%" data-xray=""></div></div>
+          <div class="mock-bar-row" data-xray=""><span class="mock-dot" data-xray=""></span><div class="mock-line" style="width:78%" data-xray=""></div></div>
+        </div>
+      </div>
+      <div class="bento-body" data-xray="">
+        <div class="bento-no" data-xray="">01 / WORKSPACE</div>
+        <div class="bento-title" data-xray="">The Prompt Workspace</div>
+        <div class="bento-desc" data-xray="">A distraction-free canvas for iterating on prompts, with inline version history so nothing is ever lost mid-experiment.</div>
+      </div>
+    </div>
+
+    <!-- Card 2: Visual Parameter Sculpting -->
+    <div class="bento-card card-stack-1" data-xray="">
+      <div class="bento-visual" data-xray="">
+        <div class="mock-sliders" data-xray="">
+          <div class="mock-slider-row" data-xray="">
+            <div class="mock-slider-label" data-xray=""><span data-xray="">temperature</span><span data-xray="">0.62</span></div>
+            <div class="mock-slider-bar" data-xray=""><div class="mock-slider-fill" style="width:62%" data-xray=""></div></div>
+          </div>
+          <div class="mock-slider-row" data-xray="">
+            <div class="mock-slider-label" data-xray=""><span data-xray="">top_p</span><span data-xray="">0.90</span></div>
+            <div class="mock-slider-bar" data-xray=""><div class="mock-slider-fill purple" style="width:90%" data-xray=""></div></div>
+          </div>
+          <div class="mock-slider-row" data-xray="">
+            <div class="mock-slider-label" data-xray=""><span data-xray="">freq_penalty</span><span data-xray="">0.34</span></div>
+            <div class="mock-slider-bar" data-xray=""><div class="mock-slider-fill" style="width:34%" data-xray=""></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="bento-body" data-xray="">
+        <div class="bento-no" data-xray="">02 / SCULPTING</div>
+        <div class="bento-title" data-xray="">Visual Parameter Sculpting</div>
+        <div class="bento-desc" data-xray="">Drag, don't type — every sampling parameter becomes a tactile control with a visible effect.</div>
+      </div>
+    </div>
+
+    <!-- Card 3: A/B Model Testing -->
+    <div class="bento-card card-stack-2" data-xray="">
+      <div class="bento-visual" data-xray="">
+        <div class="mock-ab" data-xray="">
+          <div class="mock-ab-card win" data-xray="">
+            <div class="mock-ab-tag" data-xray="">MODEL A</div>
+            <div class="mock-ab-line" data-xray=""></div>
+            <div class="mock-ab-line short" data-xray=""></div>
+          </div>
+          <div class="mock-ab-card" data-xray="">
+            <div class="mock-ab-tag" data-xray="">MODEL B</div>
+            <div class="mock-ab-line" data-xray=""></div>
+            <div class="mock-ab-line short" data-xray=""></div>
+          </div>
+        </div>
+      </div>
+      <div class="bento-body" data-xray="">
+        <div class="bento-no" data-xray="">03 / TESTING</div>
+        <div class="bento-title" data-xray="">A/B Model Testing</div>
+        <div class="bento-desc" data-xray="">Run two fine-tunes side-by-side on the same prompt and capture preference data in one click.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     4. FEATURE DEEP-DIVE — PROGRESSIVE DISCLOSURE
+     ════════════════════════════════════════════════════════════ -->
+<section class="section feature-section" id="feature" data-xray="">
+  <div class="feature-inner" data-xray="">
+    <div class="feature-visual" data-xray="">
+      <div class="fv-tabs" data-xray="">
+        <button class="fv-tab is-active" id="fv-tab-simple" onclick="setFvMode('simple')" data-xray="">Simple Mode</button>
+        <button class="fv-tab" id="fv-tab-god" onclick="setFvMode('god')" data-xray="">God Mode</button>
+      </div>
+      <div class="fv-panel" id="fv-panel" data-xray="">
+        <div class="fv-row" data-xray="">
+          <span class="fv-row-label" data-xray="">Creativity</span>
+          <span class="fv-row-val" data-xray="">Balanced</span>
+        </div>
+        <div class="fv-row" data-xray="">
+          <span class="fv-row-label" data-xray="">Response length</span>
+          <span class="fv-row-val" data-xray="">Medium</span>
+        </div>
+        <div class="fv-row locked" id="fv-row-1" data-xray="">
+          <span class="fv-row-label" data-xray="">temperature</span>
+          <span class="fv-row-val" data-xray="">0.62</span>
+        </div>
+        <div class="fv-row locked" id="fv-row-2" data-xray="">
+          <span class="fv-row-label" data-xray="">top_p / top_k</span>
+          <span class="fv-row-val" data-xray="">0.90 / 40</span>
+        </div>
+        <div class="fv-row locked" id="fv-row-3" data-xray="">
+          <span class="fv-row-label" data-xray="">logit_bias map</span>
+          <span class="fv-row-val" data-xray="">3 tokens</span>
+        </div>
+        <div class="fv-godmode-hint" id="fv-hint" data-xray="">
+          <i class="ti ti-toggle-right" aria-hidden="true"></i>
+          <span data-xray="">Switch to God Mode to reveal raw sampling parameters.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-text" data-xray="">
+      <div class="eyebrow" data-xray="">Feature Deep-Dive</div>
+      <h3 data-xray="">Progressive Disclosure</h3>
+      <p data-xray="">Most fine-tuning tools force every user into the same dense control panel. Lumina splits the difference: casual creators get three plain-language sliders, while engineers get a "God Mode" that exposes every raw parameter the model actually exposes.</p>
+      <p data-xray="">Nothing is hidden permanently — it's layered. Toggling God Mode doesn't open a new screen; it reveals the machinery underneath the same controls, so the mental model never breaks.</p>
+
+      <div class="feature-points" data-xray="">
+        <div class="feature-point" data-xray="">
+          <div class="feature-point-icon" data-xray=""><i class="ti ti-adjustments" aria-hidden="true"></i></div>
+          <div data-xray="">
+            <div class="feature-point-title" data-xray="">Plain-language defaults</div>
+            <div class="feature-point-text" data-xray="">"Creativity" and "Response length" map to sensible parameter combinations out of the box.</div>
+          </div>
+        </div>
+        <div class="feature-point" data-xray="">
+          <div class="feature-point-icon" data-xray=""><i class="ti ti-terminal-2" aria-hidden="true"></i></div>
+          <div data-xray="">
+            <div class="feature-point-title" data-xray="">God Mode for engineers</div>
+            <div class="feature-point-text" data-xray="">Raw temperature, top_p, top_k, and logit bias maps become editable the instant they're needed.</div>
+          </div>
+        </div>
+        <div class="feature-point" data-xray="">
+          <div class="feature-point-icon" data-xray=""><i class="ti ti-link" aria-hidden="true"></i></div>
+          <div data-xray="">
+            <div class="feature-point-title" data-xray="">One state, two views</div>
+            <div class="feature-point-text" data-xray="">Both modes read and write the same underlying config — switching never resets a session.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     5. TECHNICAL SPECS
+     ════════════════════════════════════════════════════════════ -->
+<section class="section specs-section" id="specs" data-xray="">
+  <div class="eyebrow" data-xray="">Technical Specs</div>
+  <h2 class="section-title" data-xray="">The <em>Stack</em></h2>
+  <p class="section-sub" data-xray="">From prototype to live inference, this is what powers Lumina.</p>
+
+  <div class="specs-terminal" data-xray="">
+    <div class="specs-term-bar" data-xray="">
+      <span class="specs-dot r" data-xray=""></span>
+      <span class="specs-dot y" data-xray=""></span>
+      <span class="specs-dot g" data-xray=""></span>
+      <span class="specs-term-title" data-xray="">lumina/stack.json</span>
+    </div>
+    <div class="specs-list" data-xray="">
+      <div class="specs-row" data-xray="">
+        <span class="specs-key" data-xray="">prototyping</span>
+        <span class="specs-val" data-xray="">Figma</span>
+        <span class="specs-tag" data-xray="">// design system, flows, handoff</span>
+      </div>
+      <div class="specs-row" data-xray="">
+        <span class="specs-key" data-xray="">ui</span>
+        <span class="specs-val" data-xray="">React</span>
+        <span class="specs-tag" data-xray="">// component architecture</span>
+      </div>
+      <div class="specs-row" data-xray="">
+        <span class="specs-key" data-xray="">styling</span>
+        <span class="specs-val" data-xray="">Tailwind CSS</span>
+        <span class="specs-tag" data-xray="">// utility-first theming</span>
+      </div>
+      <div class="specs-row" data-xray="">
+        <span class="specs-key" data-xray="">inference</span>
+        <span class="specs-val" data-xray="">OpenAI API</span>
+        <span class="specs-tag" data-xray="">// model calls, streaming</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ───────────────────────────────────────────────── -->
+<footer class="lumina-footer" data-xray="">
+  <a href="#" class="nav-logo" data-xray="">Lumina<span>.</span></a>
+  <span class="footer-copy" data-xray="">Case study by Yusuf Abdulwasiu</span>
+  <a href="/#projects" class="back-home" data-xray="">
+    <i class="ti ti-arrow-left" aria-hidden="true"></i>
+    <span>Back to Home</span>
+  </a>
+</footer>
+
+<script>
+/* ─────────────────────────────────────────────
+   PARAMETER SLIDER — Predictable ↔ Creative
+   ───────────────────────────────────────────── */
+(function(){
+  var slider = document.getElementById('temp-slider');
+  var glow   = document.getElementById('hero-glow');
+  var valEl  = document.getElementById('temp-val');
+  var modeEl = document.getElementById('temp-mode');
+
+  /* Electric Cyan → Neon Purple */
+  var c1 = {r:0,   g:229, b:255};  /* electric cyan */
+  var c2 = {r:177, g:78,  b:255};  /* neon purple   */
+
+  function lerp(a,b,t){ return Math.round(a + (b-a)*t); }
+
+  function update(){
+    var t = slider.value / 100;            /* 0 → 1 */
+    var temp = (t * 1.8).toFixed(2);        /* map to a 0.00–1.80 "temperature" value */
+
+    var r = lerp(c1.r, c2.r, t);
+    var g = lerp(c1.g, c2.g, t);
+    var b = lerp(c1.b, c2.b, t);
+    var rgb = r+','+g+','+b;
+
+    /* Background glow intensity grows toward the chaotic end */
+    var glowAlpha = (0.16 + t * 0.22).toFixed(2);
+    glow.style.setProperty('--glow-color', 'rgba('+rgb+','+glowAlpha+')');
+
+    /* Thumb / readout color */
+    document.documentElement.style.setProperty('--mode-color-live', 'rgb('+rgb+')');
+    valEl.style.color = 'rgb('+rgb+')';
+    modeEl.style.color = 'rgb('+rgb+')';
+    slider.style.setProperty('--mode-color', 'rgb('+rgb+')');
+
+    valEl.textContent = temp;
+    modeEl.textContent = t < 0.34 ? 'Predictable' : (t < 0.7 ? 'Balanced' : 'Creative');
+  }
+
+  slider.addEventListener('input', update);
+  update();
+})();
+
+/* ─────────────────────────────────────────────
+   ENTROPY HEATMAP — generated grid
+   ───────────────────────────────────────────── */
+(function(){
+  var grid = document.getElementById('heatmap-grid');
+  if(!grid) return;
+  var cells = 60;
+  for(var i=0;i<cells;i++){
+    var v = Math.random();
+    /* bias toward mid-low entropy with occasional spikes, like real generations */
+    if(Math.random() < 0.15) v = 0.6 + Math.random()*0.4;
+    else v = v * 0.55;
+
+    var cell = document.createElement('div');
+    cell.className = 'heatmap-cell';
+    cell.setAttribute('data-xray','');
+
+    var rC = Math.round(0   + (177-0)*v);
+    var gC = Math.round(60  + (78-60)*v);
+    var bC = Math.round(70  + (255-70)*v);
+    cell.style.background = 'rgba('+rC+','+gC+','+bC+','+(0.25+v*0.6)+')';
+    grid.appendChild(cell);
+  }
+})();
+
+/* ─────────────────────────────────────────────
+   PROGRESSIVE DISCLOSURE — God Mode toggle
+   ───────────────────────────────────────────── */
+function setFvMode(mode){
+  var simpleTab = document.getElementById('fv-tab-simple');
+  var godTab    = document.getElementById('fv-tab-god');
+  var rows      = [document.getElementById('fv-row-1'), document.getElementById('fv-row-2'), document.getElementById('fv-row-3')];
+  var hint      = document.getElementById('fv-hint');
+
+  var isGod = mode === 'god';
+  simpleTab.classList.toggle('is-active', !isGod);
+  godTab.classList.toggle('is-active', isGod);
+
+  rows.forEach(function(row){ row.classList.toggle('locked', !isGod); });
+
+  hint.innerHTML = isGod
+    ? '<i class="ti ti-toggle-left" aria-hidden="true"></i><span data-xray="">God Mode active — raw sampling parameters are now editable.</span>'
+    : '<i class="ti ti-toggle-right" aria-hidden="true"></i><span data-xray="">Switch to God Mode to reveal raw sampling parameters.</span>';
+}
+
+/* ─────────────────────────────────────────────
+   X-RAY MODE — shared system (matches main site)
+   ───────────────────────────────────────────── */
+var xrayOn = false;
+
+function setXrayLabels(){
+  document.querySelectorAll('[data-xray]').forEach(function(el){
+    if(xrayOn){
+      var r = el.getBoundingClientRect();
+      var w = Math.round(r.width);
+      var h = Math.round(r.height);
+      var tag = el.tagName.toLowerCase();
+      el.setAttribute('data-xray', tag+' '+w+'×'+h+'px');
+    } else {
+      el.setAttribute('data-xray','');
+    }
+  });
+}
+
+function toggleXray(){
+  xrayOn = !xrayOn;
+  document.body.classList.toggle('xray', xrayOn);
+  var btn = document.getElementById('xray-btn');
+  var label = document.getElementById('xray-label');
+  btn.classList.toggle('on', xrayOn);
+  btn.setAttribute('aria-pressed', xrayOn);
+  label.classList.toggle('on', xrayOn);
+  if(xrayOn) setXrayLabels();
+  else document.querySelectorAll('[data-xray]').forEach(function(el){ el.setAttribute('data-xray',''); });
+}
+
+window.addEventListener('resize', function(){ if(xrayOn) setXrayLabels(); });
+
+/* ─────────────────────────────────────────────
+   BACK TO HOME — smooth scroll to main portfolio
+   If this page is opened standalone, falls back to
+   navigating to index.html#projects.
+   ───────────────────────────────────────────── */
+document.querySelectorAll('.back-home').forEach(function(btn){
+  btn.addEventListener('click', function(e){
+    /* If an element with id="projects" exists on THIS page (e.g. embedded
+       in the same document as the main portfolio), scroll smoothly instead
+       of navigating away. */
+    var sameDocTarget = document.getElementById('projects');
+    if(sameDocTarget){
+      e.preventDefault();
+      sameDocTarget.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    /* Otherwise default link behavior takes the user to index.html#projects */
+  });
+});
+</script>
+
+</body>
+</html>
